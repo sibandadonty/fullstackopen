@@ -1,7 +1,7 @@
 sequenceDiagram
-    participant User
-    participant Browser
-    participant Server
+participant User
+participant Browser
+participant Server
 
     User->>Browser: Write note in text field
     User->>Browser: Click "Save" button
