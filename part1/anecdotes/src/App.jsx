@@ -12,12 +12,47 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
+  const votesArr = Array(8).fill(0);
+
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(votesArr);
+
+  const handleNextAnecdote = () => {
+    if (selected == 7) {
+      setSelected(0);
+      return;
+    }
+    setSelected((prev) => prev + 1);
+  };
+
+  const handleAnecdoteVote = () => {
+    const copy = [...votes];
+    copy[selected] += 1;
+    setVotes(copy);
+  };
+
+  const anecdoteWithMostVotes = () => {
+     const mostVotes = Math.max(...votes)
+     const index = votes.indexOf(mostVotes);
+     return index;
+  }
+
+  const mostVotesIndex = anecdoteWithMostVotes();
 
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <button>next anecdotes</button>
+      <h1>Anecdote of the day</h1>
+      <p>
+        {anecdotes[selected]} has {votes[selected]} votes
+      </p>
+      <div>
+        <button onClick={handleAnecdoteVote}>vote</button>
+        <button onClick={handleNextAnecdote}>next anecdotes</button>
+      </div>
+      <h1>Anecdote with the most votes</h1>
+        <p>
+        {anecdotes[mostVotesIndex]} has {votes[mostVotesIndex]} votes
+      </p>
     </div>
   );
 };
