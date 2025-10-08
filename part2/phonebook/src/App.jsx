@@ -4,8 +4,19 @@ const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
 
+  const personExist = (name) => {
+    const res = persons.findIndex(person => person.name === name);
+    return res !== -1 ? true : false;
+  };
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
+
+    if (personExist(newName)) {
+      alert(`${newName} is already added to phonebook`);
+      return;
+    }
+
     setPersons([...persons, { name: newName }]);
     setNewName("");
   };
