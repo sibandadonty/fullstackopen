@@ -26,7 +26,21 @@ const App = () => {
     event.preventDefault();
 
     if (personExist(newName)) {
-      alert(`${newName} is already added to phonebook`);
+      const replaceNumber = confirm(
+        `${newName} is already added to phonebook, replace the old number with the new one?`
+      );
+      if (replaceNumber) {
+        const index = persons.findIndex((person) => person.name === newName);
+        
+
+        personsService
+          .updatePersonNumber(persons[index].id, {
+            number: newNumber,
+          })
+          .then((res) => setPersons(
+            persons.map(person => person.id === persons[index].id? res.data : person)
+          ));
+      }
       return;
     }
 
@@ -47,9 +61,11 @@ const App = () => {
 
   const handleDeletePerson = (id) => {
     if (window.confirm(`Are you sure you want to delete user with id ${id}`)) {
-      personsService.deletePerson(id).then((person) => setPersons(
-        persons.filter(person => person.id !== id)
-      ));
+      personsService
+        .deletePerson(id)
+        .then((person) =>
+          setPersons(persons.filter((person) => person.id !== id))
+        );
     }
   };
 
@@ -75,7 +91,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} onDelete={handleDeletePerson}/>
+      <Persons personsToShow={personsToShow} onDelete={handleDeletePerson} />
     </div>
   );
 };

@@ -23,6 +23,11 @@ const deletePerson = (id) => {
     return response.then(res => res.data);
 }
 
+const updatePersonNumber = (id, data) => {
+    const response = axios.patch(`${baseUrl}/${id}`, data);
+    return response.then(res => res);
+}
+
 export default {
-    getPersons, addPerson, deletePerson
+    getPersons, addPerson, deletePerson, updatePersonNumber
 }
