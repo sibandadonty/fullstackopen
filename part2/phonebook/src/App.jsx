@@ -4,12 +4,15 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import axios from "axios";
 import personsService from "./services/persons";
+import "./index.css";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
+  const [notification, setNotification] = useState();
 
   const personExist = (name) => {
     const res = persons.findIndex((person) => person.name === name);
@@ -31,15 +34,24 @@ const App = () => {
       );
       if (replaceNumber) {
         const index = persons.findIndex((person) => person.name === newName);
-        
 
         personsService
           .updatePersonNumber(persons[index].id, {
             number: newNumber,
           })
-          .then((res) => setPersons(
-            persons.map(person => person.id === persons[index].id? res.data : person)
-          ));
+          .then((res) =>
+            setPersons(
+              persons.map((person) =>
+                person.id === persons[index].id ? res.data : person
+              )
+            )
+          );
+
+        setNotification("phone number updated successfully");
+
+        setTimeout(() => {
+          setNotification(undefined);
+        }, 5000);
       }
       return;
     }
@@ -50,7 +62,11 @@ const App = () => {
         number: newNumber,
       })
       .then((person) => setPersons(persons.concat(person)));
+    setNotification("New person added successfully");
 
+    setTimeout(() => {
+      setNotification(undefined);
+    }, 5000);
     setNewName("");
     setNewNumber("");
   };
@@ -66,12 +82,17 @@ const App = () => {
         .then((person) =>
           setPersons(persons.filter((person) => person.id !== id))
         );
+      setNotification("Person removed successfully");
+      setTimeout(() => {
+        setNotification(undefined);
+      }, 5000);
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <form onSubmit={handleFormSubmit}>
         <div>
           <SearchFilter
