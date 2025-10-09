@@ -28,18 +28,23 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
       return;
     }
-
-    setPersons([...persons, { name: newName, number: newNumber }]);
+    axios.post("http://localhost:3001/persons", {
+      name: newName,
+      number: newNumber,
+    }).then(response => {
+      const data = response.data;
+      setPersons([...persons, data]);
+      
+    });
     setNewName("");
     setNewNumber("");
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons")
-    .then(response => {
+    axios.get("http://localhost:3001/persons").then((response) => {
       const persons = response.data;
       setPersons(persons);
-    })
+    });
   }, []);
 
   return (
