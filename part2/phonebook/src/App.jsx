@@ -6,6 +6,7 @@ import axios from "axios";
 import personsService from "./services/persons";
 import "./index.css";
 import Notification from "./components/Notification";
+import ErrorMessage from "./components/ErrorMessage";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -13,6 +14,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [nameFilter, setNameFilter] = useState("");
   const [notification, setNotification] = useState();
+  const [error, setError] = useState();
 
   const personExist = (name) => {
     const res = persons.findIndex((person) => person.name === name);
@@ -45,13 +47,27 @@ const App = () => {
                 person.id === persons[index].id ? res.data : person
               )
             )
-          );
+          )
+          .catch((error) => {
+            console.log(
+              "Error message after trying to updated user deleted in one browser: ",
+              error
+            );
+            console.log("Status code: ", error.status);
 
-        setNotification("phone number updated successfully");
+            if (error.status === 404) {
+              setError(`Information for ${newName} has already been removed`);
+              setTimeout(() => {
+                setError(undefined);
+              }, 5000);
+            } else {
+              setNotification("phone number updated successfully");
 
-        setTimeout(() => {
-          setNotification(undefined);
-        }, 5000);
+              setTimeout(() => {
+                setNotification(undefined);
+              }, 5000);
+            }
+          });
       }
       return;
     }
@@ -92,7 +108,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification} />
+      <Notification message={notification} className="notification-container" />
+      <ErrorMessage message={error} className="notification-container-error" />
       <form onSubmit={handleFormSubmit}>
         <div>
           <SearchFilter

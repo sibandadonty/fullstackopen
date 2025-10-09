@@ -1,6 +1,4 @@
-import React from "react";
-
-const Notification = ({ message, className }) => {
+const ErrorMessage = ({ message, className }) => {
   if (message === undefined) {
     return null;
   }
@@ -12,4 +10,4 @@ const Notification = ({ message, className }) => {
   );
 };
 
-export default Notification;
+export default ErrorMessage;
