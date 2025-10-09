@@ -30,10 +30,12 @@ const App = () => {
       return;
     }
 
-    personsService.addPerson({
-      name: newName,
-      number: newNumber,
-    }).then(person => setPersons(persons.concat(person)));
+    personsService
+      .addPerson({
+        name: newName,
+        number: newNumber,
+      })
+      .then((person) => setPersons(persons.concat(person)));
 
     setNewName("");
     setNewNumber("");
@@ -42,6 +44,14 @@ const App = () => {
   useEffect(() => {
     personsService.getPersons().then((persons) => setPersons(persons));
   }, []);
+
+  const handleDeletePerson = (id) => {
+    if (window.confirm(`Are you sure you want to delete user with id ${id}`)) {
+      personsService.deletePerson(id).then((person) => setPersons(
+        persons.filter(person => person.id !== id)
+      ));
+    }
+  };
 
   return (
     <div>
@@ -65,7 +75,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} onDelete={handleDeletePerson}/>
     </div>
   );
 };

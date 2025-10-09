@@ -1,14 +1,17 @@
 import React from "react";
 
-const Persons = ({ personsToShow }) => {
+const Persons = ({ personsToShow, onDelete }) => {
   return (
     <div>
       {personsToShow.map((person) => {
         return (
           <div key={person.name}>
-            <p>
-              {person.name} {person.number}
-            </p>
+            <div>
+              <p style={{ display: "inline-block", marginRight: "5px" }}>
+                {person.name} {person.number}
+              </p>
+              <button onClick={() => onDelete(person.id)}>delete</button>
+            </div>
             <hr />
           </div>
         );
