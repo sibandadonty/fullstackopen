@@ -51,6 +51,20 @@ app.get("/api/persons/:id", (request, response) => {
    response.json(person);
 })
 
+app.delete("/api/persons/:id", (request, response) => {
+   const personId = request.params.id;
+   const person = persons.find(person => person.id === personId);
+
+   if (!person) {
+      return response.status(404).json({
+        message: `User with id ${personId} not found`
+      })
+   }
+
+   const updatedPersonList = persons.filter(person => person.id !== personId)
+   response.json(updatedPersonList);
+})
+
 app.listen(PORT, () => {
     console.log(`server listening on port ${PORT}`);
 })
