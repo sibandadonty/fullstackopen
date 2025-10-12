@@ -68,8 +68,22 @@ app.delete("/api/persons/:id", (request, response) => {
 
 app.post("/api/persons", (request, response) => {
    const body = request.body;
-   
+   const {name, number} = body;
    const person = {id: Math.floor(Math.random() * 1000), ...body}
+
+   if (!name) {
+     return response.status(400).json({ error: 'name is missing'})
+   }   
+     if (!number) {
+     return response.status(400).json({ error: "number is missing"})
+   }
+
+   const personExist = persons.findIndex(person => person.name === name);
+   
+   if (personExist === -1) {
+      response.status(400).json({error: "person already exist"})
+      return;
+   }
    
    response.json(persons.concat(person))
 })
