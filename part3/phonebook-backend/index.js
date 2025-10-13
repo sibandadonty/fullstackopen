@@ -4,6 +4,15 @@ var morgan = require('morgan')
 const cors = require("cors");
 const Person = require("./models/person");
 
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error);
+  
+
+
+  next(error);
+}
+
 app = express()
 app.use(express.json())
 app.use(cors());
@@ -12,6 +21,8 @@ morgan.token("data", (req, res) => {
     return JSON.stringify(req.body);
 })
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :data"))
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 3001;
 
 const persons = [
