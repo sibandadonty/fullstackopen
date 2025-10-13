@@ -66,16 +66,9 @@ app.get("/api/persons/:id", (request, response) => {
 
 app.delete("/api/persons/:id", (request, response) => {
    const personId = request.params.id;
-   const person = persons.find(person => person.id === personId);
-
-   if (!person) {
-      return response.status(404).json({
-        message: `User with id ${personId} not found`
-      })
-   }
-
-   const updatedPersonList = persons.filter(person => person.id !== personId)
-   response.json(updatedPersonList);
+   Person.findByIdAndDelete(personId).then(result => {
+    response.status(204).end();
+   }).catch(err => console.log(err.message))
 })
 
 app.post("/api/persons", (request, response) => {
