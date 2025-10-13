@@ -77,7 +77,7 @@ const App = () => {
         name: newName,
         number: newNumber,
       })
-      .then((person) => setPersons(persons.concat(person)));
+      .then((person) => setPersons(person));
     setNotification("New person added successfully");
 
     setTimeout(() => {
