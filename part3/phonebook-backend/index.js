@@ -90,18 +90,17 @@ app.post("/api/persons", (request, response) => {
      return response.status(400).json({ error: "number is missing"})
    }
    
-  console.log("Value for persons before finding if person exist: ", persons);
-  
-
-   const personExist = persons.findIndex(person => person.name === name);
-   console.log("Value for person exist: ", personExist);
+  //  const personExist = persons.findIndex(person => person.name === name);
+  //  console.log("Value for person exist: ", personExist);
    
-   if (personExist !== -1) {
-      response.status(400).json({error: "person already exist"})
-      return;
-   }
+  //  if (personExist !== -1) {
+  //     response.status(400).json({error: "person already exist"})
+  //     return;
+  //  }
+  Person.save().then(person => {
+    response.json(persons.concat(person))
+  })
    
-   response.json(persons.concat(person))
 })
 
 app.listen(PORT, () => {
