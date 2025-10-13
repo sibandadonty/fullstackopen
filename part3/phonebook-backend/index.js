@@ -3,6 +3,7 @@ var morgan = require('morgan')
 
 app = express()
 app.use(express.json())
+app.use(express.static("dist"))
 morgan.token("data", (req, res) => {
     return JSON.stringify(req.body);
 })
@@ -82,10 +83,14 @@ app.post("/api/persons", (request, response) => {
      if (!number) {
      return response.status(400).json({ error: "number is missing"})
    }
+   
+  console.log("Value for persons before finding if person exist: ", persons);
+  
 
    const personExist = persons.findIndex(person => person.name === name);
+   console.log("Value for person exist: ", personExist);
    
-   if (personExist === -1) {
+   if (personExist !== -1) {
       response.status(400).json({error: "person already exist"})
       return;
    }
