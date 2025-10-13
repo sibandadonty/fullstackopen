@@ -25,29 +25,6 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 
-const persons = [
-    { 
-      "id": "1",
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": "2",
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": "3",
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": "4",
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-];
-
 app.get("/api/persons", (request, response) => {
     Person.find({}).then(persons => {
       response.json(persons);
@@ -55,24 +32,27 @@ app.get("/api/persons", (request, response) => {
 }) 
 
 app.get("/info", (request, response) => {
-    const res = `
-      <p>Phonebook has information for ${persons.length} people</p>
-      <p>${new Date()}</p>
-    `
-    response.send(res);
+    Person.find({}).then(result => {
+      const res = `
+        <p>Phonebook has information for ${result.length} people</p>
+        <p>${new Date()}</p>
+      `
+      response.send(res);
+    })
 })
 
 app.get("/api/persons/:id", (request, response) => {
-   const personId = request.params.id;
-   const person = persons.find(person => person.id === personId);
-
-   if (!person) {
+  const personId = request.params.id;
+  Person.findById(personId).then(person => {
+    if (!person) {
       return response.status(404).json({
         message: `User with id ${personId} not found`
       })
-   }
+    }
+  
+    response.json(person);
+  })
 
-   response.json(person);
 })
 
 app.delete("/api/persons/:id", (request, response) => {
@@ -85,7 +65,6 @@ app.delete("/api/persons/:id", (request, response) => {
 app.post("/api/persons", (request, response) => {
    const body = request.body;
    const {name, number} = body;
-   const person = {id: Math.floor(Math.random() * 1000), ...body}
 
    if (!name) {
      return response.status(400).json({ error: 'name is missing'})
@@ -94,17 +73,22 @@ app.post("/api/persons", (request, response) => {
      return response.status(400).json({ error: "number is missing"})
    }
    
-  //  const personExist = persons.findIndex(person => person.name === name);
-  //  console.log("Value for person exist: ", personExist);
-   
-  //  if (personExist !== -1) {
-  //     response.status(400).json({error: "person already exist"})
-  //     return;
-  //  }
-  Person.save().then(person => {
-    response.json(persons.concat(person))
-  })
-   
+  Person.find({ name }).then(person => {
+
+    if (person.length < 1) {
+      const new_person = new Person({
+        name, number
+      })
+      new_person.save().then(res => {
+        response.json(res);
+      })
+    } else {
+      person[0].number = number
+      person[0].save().then(updatedPerson => {
+        response.json(updatedPerson);
+      })
+    }
+  })  
 })
 
 app.listen(PORT, () => {
