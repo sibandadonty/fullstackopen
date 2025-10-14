@@ -7,12 +7,12 @@ const Person = require('./models/person')
 
 const errorHandler = (error, request, response, next) => {
   console.error(error)
-  
+
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     console.log('Takudzosa validation error racho horaiti:')
-    
+
     return response.status(400).json({ error: error.message })
   }
 
@@ -35,7 +35,7 @@ app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
-}) 
+})
 
 app.get('/info', (request, response) => {
   Person.find({}).then(result => {
@@ -55,7 +55,6 @@ app.get('/api/persons/:id', (request, response) => {
         message: `User with id ${personId} not found`
       })
     }
-  
     response.json(person)
   })
 
@@ -70,15 +69,15 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-  const {name, number} = body
+  const { name, number } = body
 
   if (!name) {
-    return response.status(400).json({ error: 'name is missing'})
-  }   
-  if (!number) {
-    return response.status(400).json({ error: 'number is missing'})
+    return response.status(400).json({ error: 'name is missing' })
   }
-   
+  if (!number) {
+    return response.status(400).json({ error: 'number is missing' })
+  }
+
   Person.find({ name }).then(person => {
 
     if (person.length < 1) {
@@ -97,14 +96,14 @@ app.post('/api/persons', (request, response, next) => {
         response.json(updatedPerson)
       }).catch(err => {
         console.log('Error after updating the user: ', err)
-        
+
         next(err)
       })
     }
   }).catch(err => {
     console.log('Global find error before updating or adding user: ', err)
     next(err)
-  })  
+  })
 })
 
 app.listen(PORT, () => {
