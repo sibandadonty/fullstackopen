@@ -2,15 +2,7 @@ const { test, describe } = require('node:test')
 const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
 
-test('dummy returns one', () => {
-  const blogs = []
-
-  const result = listHelper.dummy(blogs)
-  assert.strictEqual(result, 1)
-})
-
-describe('total likes', () => {
-  const blogs = [
+const blogs = [
   {
     _id: "5a422a851b54a676234d17f7",
     title: "React patterns",
@@ -72,6 +64,15 @@ const listWithOneBlog = [
     }
   ]
 
+test('dummy returns one', () => {
+  const blogs = []
+
+  const result = listHelper.dummy(blogs)
+  assert.strictEqual(result, 1)
+})
+
+describe('total likes', () => {
+
   test('when list has only one blog, equals the likes of that', () => {
     const result = listHelper.totalLikes(listWithOneBlog)
     assert.strictEqual(result, 5)
@@ -86,4 +87,27 @@ const listWithOneBlog = [
     const result = listHelper.totalLikes(blogs);
     assert.strictEqual(result, 36)    
   })
+})
+
+describe("favourite blog", () => {
+
+    test("a list with multiple blogs", () => {
+    const result = listHelper.favoriteBlog(blogs);
+
+    assert.deepStrictEqual(result,   {
+        _id: "5a422b3a1b54a676234d17f9",
+        title: "Canonical string reduction",
+        author: "Edsger W. Dijkstra",
+        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+        likes: 12,
+        __v: 0
+    })
+
+    test("list with one blog", () => {
+        const result = listHelper.favoriteBlog(listWithOneBlog);
+
+        assert.deepStrictEqual(result, listWithOneBlog[0]);
+    })
+
+})
 })
