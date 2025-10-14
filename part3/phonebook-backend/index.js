@@ -8,7 +8,13 @@ const Person = require("./models/person");
 const errorHandler = (error, request, response, next) => {
   console.error(error);
   
-
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    console.log("Takudzosa validation error racho horaiti: ");
+    
+    return response.status(400).json({ error: error.message })
+  }
 
   next(error);
 }
@@ -62,7 +68,7 @@ app.delete("/api/persons/:id", (request, response) => {
    }).catch(err => console.log(err.message))
 })
 
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response, next) => {
    const body = request.body;
    const {name, number} = body;
 
@@ -81,13 +87,23 @@ app.post("/api/persons", (request, response) => {
       })
       new_person.save().then(res => {
         response.json(res);
+      }).catch(err => {
+        console.log("Error after saving the user for the first time: ", err);
+        next(err)
       })
     } else {
       person[0].number = number
       person[0].save().then(updatedPerson => {
         response.json(updatedPerson);
+      }).catch(err => {
+        console.log("Error after updating the user: ", err);
+        
+        next(err)
       })
     }
+  }).catch(err => {
+   console.log("Global find error before updating or adding user: ", err);
+    next(err)
   })  
 })
 

@@ -77,8 +77,17 @@ const App = () => {
         name: newName,
         number: newNumber,
       })
-      .then((person) => setPersons(person));
-    setNotification("New person added successfully");
+      .then((person) => {
+        setPersons(person);
+        setNotification("New person added successfully");
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+        setNotification(error.response.data.error);
+        setTimeout(() => {
+          setNotification(undefined);
+        }, 5000);
+      });
 
     setTimeout(() => {
       setNotification(undefined);
