@@ -50,7 +50,7 @@ test("HTTP POST request to /api/blogs creates a new blog", async () => {
 
 test(" if the likes property is missing from the request, it will default to the value 0", async () => {
     const blogWithNoLikesField = {
-        title: "Testing with Jest and Supertest",
+        title: "Blog with no likes field",
         author: "Test Author", 
         url: "https://example.com/test",
     };
@@ -62,8 +62,49 @@ test(" if the likes property is missing from the request, it will default to the
           .expect("Content-Type", /application\/json/)
     
         assert.strictEqual(response.body.likes, 0);
-    
 
+})
+
+describe("if the title or url properties are missing from the request data", () => {
+
+    test("blog with no title", async () => {
+        const blogWithNoTitle = {
+            author: "Test Author", 
+            url: "https://example.com/test",
+            like: 53
+        };
+    
+        await api
+        .post("/api/blogs")
+        .send(blogWithNoTitle)
+        .expect(400)
+    })
+
+    
+    test("blog with no url", async () => {
+        const blogWithNoUrl = {
+            title: "Blog with no title or content",
+            author: "Test Author", 
+            like: 53
+        };
+    
+        await api
+        .post("/api/blogs")
+        .send(blogWithNoUrl)
+        .expect(400)
+    })
+
+    test("blog without both url and title", async () => {
+        const blogWithoutBoth = {
+            author: "Test Author", 
+            like: 53
+        };
+    
+        await api
+        .post("/api/blogs")
+        .send(blogWithoutBoth)
+        .expect(400)
+    })
 })
 
 after(async () => {
