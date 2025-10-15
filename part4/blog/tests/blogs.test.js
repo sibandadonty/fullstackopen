@@ -48,6 +48,24 @@ test("HTTP POST request to /api/blogs creates a new blog", async () => {
   assert(titles.includes("Testing with Jest and Supertest"));
 });
 
+test(" if the likes property is missing from the request, it will default to the value 0", async () => {
+    const blogWithNoLikesField = {
+        title: "Testing with Jest and Supertest",
+        author: "Test Author", 
+        url: "https://example.com/test",
+    };
+    
+    const response = await api
+          .post("/api/blogs")
+          .send(blogWithNoLikesField)
+          .expect(201)
+          .expect("Content-Type", /application\/json/)
+    
+        assert.strictEqual(response.body.likes, 0);
+    
+
+})
+
 after(async () => {
   await mongoose.connection.close();
 });
