@@ -107,6 +107,21 @@ describe("if the title or url properties are missing from the request data", () 
     })
 })
 
+test("DELETE /api/blogs", async () => {
+   const blogsAtStart = await blogsInDB();
+   
+   const blogToDelete = blogsAtStart[0];
+   
+   await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+   const blogsAtEnd = await blogsInDB();
+
+   const authors = blogsAtEnd.map((n) => n.author)
+   
+   assert(!authors.includes(blogToDelete.author))
+   assert(blogsAtEnd.length, blogs.length - 1);
+})
+
 after(async () => {
   await mongoose.connection.close();
 });
