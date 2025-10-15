@@ -1,0 +1,9 @@
+PUT http://localhost:3003/api/blogs/68efbf1cdd663d7afad9a578
+Content-Type: application/json
+
+{
+    "title": "Testing with Jest and Supertest 1",
+    "author": "Test Author 1", 
+    "url": "https://example.com/test",
+    "likes": 100
+}
