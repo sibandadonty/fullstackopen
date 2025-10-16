@@ -1,4 +1,5 @@
 const Blog = require("../models/blog");
+const User = require("../models/user");
 
 const notes = [
   {
@@ -31,6 +32,24 @@ const blogs = [
     likes: 12,
   },
 ]
+
+const sampleUsers = [
+  {
+    name: "Donty Moyo",
+    username: "donty123",
+    password: "securePass"
+  },
+  {
+    name: "Tariro Nyasha",
+    username: "tariro456",
+    password: "strongWord"
+  },
+  {
+    name: "Kuda Chikafu",
+    username: "kuda789",
+    password: "safeEntry"
+  }
+];
 
 const dummy = (blogs) => {
   return 1;
@@ -70,6 +89,11 @@ const blogsInDB = async () => {
    return blogs;
 }
 
+const usersInDB = async () => {
+  const response = await User.find({});
+  return response.map(user => user.toJSON())
+}
+
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostLikes, blogs, blogsInDB  
+  dummy, totalLikes, favoriteBlog, mostLikes, blogs, blogsInDB, usersInDB, sampleUsers  
 }

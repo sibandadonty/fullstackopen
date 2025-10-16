@@ -5,6 +5,19 @@ const bcrypt = require("bcrypt");
 userRouter.post("/", async (request, response) => {
     const { name, username, password } = request.body;
     
+    if (!username || username.length < 3) {
+        return response.status(400).json({ error: 'Username must be at least 3 characters long' });
+    }
+
+    if (!password || password.length < 3) {
+        return response.status(400).json({ error: 'Password must be at least 3 characters long' });
+    }
+
+    const userExist = await User.findOne({ username });
+    if (userExist) {
+        return response.status(400).json({ error: 'Username must be unique' });
+    }
+
     const salt = 10;
 
     const passwordHash = await bcrypt.hash(password, salt);
