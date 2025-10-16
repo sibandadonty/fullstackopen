@@ -6,6 +6,7 @@ const logger = require("./utils/logger");
 const middleware = require("./utils/middleware");
 const Blog = require("./models/blog");
 const blogRouter = require("./controllers/blog");
+const userRouter = require("./controllers/user");
 
 mongoose.connect(config.DATABASE_URL).then(() => {
    logger.info("Database connected successfully")
@@ -15,6 +16,7 @@ mongoose.connect(config.DATABASE_URL).then(() => {
 
 app.use(express.json())
 app.use("/api/blogs", blogRouter)
+app.use("/api/users", userRouter)
 //always the last middleware to be used
 app.use(middleware.errorHandler)
 
