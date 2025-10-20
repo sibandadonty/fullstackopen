@@ -5,14 +5,12 @@ const AddBlogForm = ({ token, setNotification }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-  const [blog, setBlog] = useState();
   
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const results = await blogService.addBlog({ title, author, url }, token);
+    await blogService.addBlog({ title, author, url }, token);
 
-    setBlog(results);
     setAuthor("");
     setTitle("");
     setUrl("");

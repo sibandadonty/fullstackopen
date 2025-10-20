@@ -4,6 +4,7 @@ import blogService from "./services/blogs";
 import LoginForm from "./components/LoginForm";
 import AddBlogForm from "./components/AddBlogForm";
 import Notification from "./components/Notification";
+import Togglable from "./components/Togglable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -19,32 +20,39 @@ const App = () => {
     setUser(JSON.parse(user));
     setNotification({
       message: "login successful",
-      isError: false
-    })
+      isError: false,
+    });
     setTimeout(() => {
-      setNotification(undefined)
-    }, 5000)
+      setNotification(undefined);
+    }, 5000);
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("loggedInUser");
     setNotification({
       message: "logout successful",
-      isError: false
-    })
+      isError: false,
+    });
     setUser("");
     setTimeout(() => {
       setNotification(undefined);
-    }, 5000)
+    }, 5000);
   };
 
   return (
     <div>
-      {!user && <LoginForm setUser={setUser} setNotification={setNotification} />}
+      {!user && (
+        <LoginForm setUser={setUser} setNotification={setNotification} />
+      )}
       {user && (
         <>
           <h2>blogs</h2>
-          {notification && <Notification message={notification.message} isError={notification.isError}/>}
+          {notification && (
+            <Notification
+              message={notification.message}
+              isError={notification.isError}
+            />
+          )}
           {user && (
             <>
               <p style={{ display: "inline-block" }}>
@@ -53,7 +61,9 @@ const App = () => {
               <button onClick={handleLogout}>logout</button>
             </>
           )}
-          <AddBlogForm token={user.token} setNotification={setNotification}/>
+          <Togglable>
+            <AddBlogForm token={user.token} setNotification={setNotification} />
+          </Togglable>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
