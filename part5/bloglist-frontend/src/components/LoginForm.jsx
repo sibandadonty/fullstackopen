@@ -2,7 +2,7 @@ import { useState } from "react";
 import login from "../services/login";
 import loginServices from "../services/login";
 
-const LoginForm = ({ setUser }) => {
+const LoginForm = ({ setUser, setNotification }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,6 +14,13 @@ const LoginForm = ({ setUser }) => {
     localStorage.setItem("loggedInUser", JSON.stringify(results));
     setUsername("");
     setPassword("");
+    setNotification({
+      message: "login successful",
+      isError: false
+    })
+    setTimeout(() => {
+      setNotification(undefined);
+    }, 5000)
   }
   return (
     <form onSubmit={handleOnSubmit}>

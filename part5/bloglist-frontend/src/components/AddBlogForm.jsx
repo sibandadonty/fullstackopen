@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import blogService from "../services/blogs";
 
-const AddBlogForm = ({ token }) => {
+const AddBlogForm = ({ token, setNotification }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
   const [blog, setBlog] = useState();
+  
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -15,6 +16,13 @@ const AddBlogForm = ({ token }) => {
     setAuthor("");
     setTitle("");
     setUrl("");
+    setNotification({
+        message: "blog added successfully",
+        isError: false
+    })
+    setTimeout(() => {
+        setNotification(undefined);
+    }, 5000)
   };
   return (
     <form onSubmit={handleFormSubmit}>
