@@ -1,43 +1,45 @@
-import { useState, useEffect } from "react";
-import Blog from "./components/Blog";
-import blogService from "./services/blogs";
-import LoginForm from "./components/LoginForm";
-import AddBlogForm from "./components/AddBlogForm";
-import Notification from "./components/Notification";
-import Togglable from "./components/Togglable";
+import { useState, useEffect, useRef } from 'react'
+import Blog from './components/Blog'
+import blogService from './services/blogs'
+import LoginForm from './components/LoginForm'
+import AddBlogForm from './components/AddBlogForm'
+import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState();
-  const [notification, setNotification] = useState();
+  const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useState()
+  const [notification, setNotification] = useState()
+
+  const addBlogRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+    blogService.getAll().then((blogs) => setBlogs(blogs))
+  }, [])
 
   useEffect(() => {
-    const user = localStorage.getItem("loggedInUser");
-    setUser(JSON.parse(user));
+    const user = localStorage.getItem('loggedInUser')
+    setUser(JSON.parse(user))
     setNotification({
-      message: "login successful",
+      message: 'login successful',
       isError: false,
-    });
+    })
     setTimeout(() => {
-      setNotification(undefined);
-    }, 5000);
-  }, []);
+      setNotification(undefined)
+    }, 5000)
+  }, [])
 
   const handleLogout = () => {
-    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem('loggedInUser')
     setNotification({
-      message: "logout successful",
+      message: 'logout successful',
       isError: false,
-    });
-    setUser("");
+    })
+    setUser('')
     setTimeout(() => {
-      setNotification(undefined);
-    }, 5000);
-  };
+      setNotification(undefined)
+    }, 5000)
+  }
 
   return (
     <div>
@@ -55,14 +57,14 @@ const App = () => {
           )}
           {user && (
             <>
-              <p style={{ display: "inline-block" }}>
+              <p style={{ display: 'inline-block' }}>
                 {user.name} is logged in
               </p>
               <button onClick={handleLogout}>logout</button>
             </>
           )}
-          <Togglable>
-            <AddBlogForm token={user.token} setNotification={setNotification} />
+          <Togglable ref={addBlogRef}>
+            <AddBlogForm addBlogRef={addBlogRef} token={user.token} setNotification={setNotification} />
           </Togglable>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
@@ -70,7 +72,7 @@ const App = () => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

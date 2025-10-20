@@ -13,7 +13,7 @@ const addBlog = async (data, token) => {
     }
   }
   const results = await axios.post(baseUrl, data, config)
-  return results.data;
+  return results.data
 }
 
 export default { getAll, addBlog }
