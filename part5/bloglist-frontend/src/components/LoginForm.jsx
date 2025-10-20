@@ -1,5 +1,6 @@
 import { useState } from "react";
 import login from "../services/login";
+import loginServices from "../services/login";
 
 const LoginForm = ({ setUser }) => {
   const [username, setUsername] = useState("");
@@ -9,6 +10,8 @@ const LoginForm = ({ setUser }) => {
     e.preventDefault();
     const results = await login.loginUser({username, password});
     setUser(results);
+    loginServices.setToken(results.token);
+    localStorage.setItem("loggedInUser", JSON.stringify(results));
     setUsername("");
     setPassword("");
   }
