@@ -6,4 +6,14 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-export default { getAll }
+const addBlog = async (data, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+  const results = await axios.post(baseUrl, data, config)
+  return results.data;
+}
+
+export default { getAll, addBlog }

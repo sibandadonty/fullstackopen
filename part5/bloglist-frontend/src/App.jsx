@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import LoginForm from "./components/LoginForm";
+import AddBlogForm from "./components/AddBlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -37,6 +38,7 @@ const App = () => {
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
+          <AddBlogForm token={user.token}/>
         </>
       )}
     </div>
