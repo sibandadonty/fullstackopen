@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Hello World",
-  "author": "D Sibanda",
-  "url": "www.dsibanda.co.xw",
-  "likes": 53
+  "title": "Hello World 1",
+  "author": "D Sibanda 1",
+  "url": "www.dsibanda.co.zw",
+  "likes": 53,
+  "userId": "68f0b86370b673077d2de285"
 }
