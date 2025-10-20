@@ -1,0 +1,30 @@
+import { useState } from "react";
+import login from "../services/login";
+
+const LoginForm = ({ setUser }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleOnSubmit = async e => {
+    e.preventDefault();
+    const results = await login.loginUser({username, password});
+    setUser(results);
+    setUsername("");
+    setPassword("");
+  }
+  return (
+    <form onSubmit={handleOnSubmit}>
+      <label style={{ display: "block", marginBottom: 5 }}>
+        username:
+        <input type="text" value={username} onChange={e => setUsername(e.target.value)}/>
+      </label>
+      <label style={{ display: "block", marginBottom: 5 }}>
+        password:
+        <input type="password" value={password} onChange={e => setPassword(e.target.value)}/>
+      </label>
+      <button>login</button>
+    </form>
+  );
+};
+
+export default LoginForm;
