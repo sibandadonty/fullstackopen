@@ -51,7 +51,7 @@ blogRouter.delete("/:id", async (request, response) => {
   if (!blog) {
     return response.status(404).json({ error: "Blog not found" });
   }
-
+  
   if (blog.user.toString() !== decodedToken.id) {
     return response.status(401).json({error: "not authorized to delete blog"})
   }
@@ -62,17 +62,18 @@ blogRouter.delete("/:id", async (request, response) => {
 });
 
 blogRouter.put("/:id", async (request, response) => {
-  const {title, url, likes, author} = request.body;
+  const {title, url, likes, author, user} = request.body;
   const result = await Blog.findById(request.params.id);
 
   if (!result) {
     return response.status(404).end()
-  }
-  
+  } 
+
   result.author = author;
   result.url = url;
   result.likes = likes;
   result.title = title;
+  result.user = user;
 
   const updatedBlog = await result.save();
 

@@ -24,6 +24,14 @@ const Blog = ({ blog, user }) => {
     setLikes(updatedLikes)
   }
 
+  const handleBlogRemove = async () => {
+    const isApproved = confirm(`Remove blog ${blog.title} by ${blog.author}`)
+    if (!isApproved) {
+      return
+    }
+    await blogServices.deleteBlog(blog.id, user.token)
+  }
+
   return (
     <div>
       <div className="back-border">
@@ -38,6 +46,7 @@ const Blog = ({ blog, user }) => {
             likes {likes} <button onClick={handleLikeBlog}>like</button>
           </p>
           <p>{blog.author}</p>
+          {user.id === blog.user.id && <button onClick={handleBlogRemove}>remove</button> }
         </div>
       )}
     </div>
