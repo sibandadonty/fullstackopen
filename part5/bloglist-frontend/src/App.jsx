@@ -67,7 +67,7 @@ const App = () => {
             <AddBlogForm addBlogRef={addBlogRef} token={user.token} setNotification={setNotification} />
           </Togglable>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} user={user}/>
           ))}
         </>
       )}
