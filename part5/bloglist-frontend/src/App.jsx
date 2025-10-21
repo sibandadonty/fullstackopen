@@ -64,11 +64,17 @@ const App = () => {
             </>
           )}
           <Togglable ref={addBlogRef}>
-            <AddBlogForm addBlogRef={addBlogRef} token={user.token} setNotification={setNotification} />
+            <AddBlogForm
+              addBlogRef={addBlogRef}
+              token={user.token}
+              setNotification={setNotification}
+            />
           </Togglable>
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} user={user}/>
-          ))}
+          {blogs
+            .sort((a, b) => a.likes - b.likes)
+            .map((blog) => (
+              <Blog key={blog.id} blog={blog} user={user} />
+            ))}
         </>
       )}
     </div>
