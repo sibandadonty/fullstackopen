@@ -1,15 +1,15 @@
-import React, { useState, useImperativeHandle } from "react"
+import React, { useState, useImperativeHandle } from "react";
 
 const Togglable = (props) => {
-  const [visiblility, setVisiblility] = useState(false)
+  const [visiblility, setVisiblility] = useState(false);
 
   const toggleVisibility = () => {
-    setVisiblility((prev) => !prev)
-  }
+    setVisiblility((prev) => !prev);
+  };
 
   useImperativeHandle(props.ref, () => {
-    return { toggleVisibility }
-  })
+    return { toggleVisibility };
+  });
 
   return (
     <div>
@@ -24,7 +24,7 @@ const Togglable = (props) => {
         create new blog
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default Togglable
+export default Togglable;

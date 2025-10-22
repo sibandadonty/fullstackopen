@@ -1,15 +1,15 @@
-import { useState } from "react"
-import blogServices from "../services/blogs"
+import { useState } from "react";
+import blogServices from "../services/blogs";
 
 const Blog = ({ blog, user }) => {
-  const [viewDetails, setViewDetails] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
+  const [viewDetails, setViewDetails] = useState(false);
+  const [likes, setLikes] = useState(blog.likes);
   const handleSetView = () => {
-    setViewDetails((prev) => !prev)
-  }
+    setViewDetails((prev) => !prev);
+  };
 
   const handleLikeBlog = async () => {
-    const updatedLikes = likes + 1
+    const updatedLikes = likes + 1;
     await blogServices.updateLikes(
       {
         title: blog.title,
@@ -20,17 +20,17 @@ const Blog = ({ blog, user }) => {
       },
       user.token,
       blog.id
-    )
-    setLikes(updatedLikes)
-  }
+    );
+    setLikes(updatedLikes);
+  };
 
   const handleBlogRemove = async () => {
-    const isApproved = confirm(`Remove blog ${blog.title} by ${blog.author}`)
+    const isApproved = confirm(`Remove blog ${blog.title} by ${blog.author}`);
     if (!isApproved) {
-      return
+      return;
     }
-    await blogServices.deleteBlog(blog.id, user.token)
-  }
+    await blogServices.deleteBlog(blog.id, user.token);
+  };
 
   return (
     <div>
@@ -50,7 +50,7 @@ const Blog = ({ blog, user }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;

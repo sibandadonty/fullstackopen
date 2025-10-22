@@ -1,27 +1,27 @@
-import React, { useState } from "react"
-import blogService from "../services/blogs"
+import React, { useState } from "react";
+import blogService from "../services/blogs";
 
 const AddBlogForm = ({ token, setNotification, addBlogRef }) => {
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [url, setUrl] = useState("")
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    await blogService.addBlog({ title, author, url }, token)
-    addBlogRef.current.toggleVisibility()
-    setAuthor("")
-    setTitle("")
-    setUrl("")
+    await blogService.addBlog({ title, author, url }, token);
+    addBlogRef.current.toggleVisibility();
+    setAuthor("");
+    setTitle("");
+    setUrl("");
     setNotification({
       message: "blog added successfully",
       isError: false
-    })
+    });
     setTimeout(() => {
-      setNotification(undefined)
-    }, 5000)
-  }
+      setNotification(undefined);
+    }, 5000);
+  };
   return (
     <form onSubmit={handleFormSubmit}>
       <h1>Create New</h1>
@@ -51,7 +51,7 @@ const AddBlogForm = ({ token, setNotification, addBlogRef }) => {
       </label>
       <button>Submit</button>
     </form>
-  )
-}
+  );
+};
 
-export default AddBlogForm
+export default AddBlogForm;
