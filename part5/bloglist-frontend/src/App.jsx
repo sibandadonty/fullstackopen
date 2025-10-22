@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
-import blogService from './services/blogs'
-import LoginForm from './components/LoginForm'
-import AddBlogForm from './components/AddBlogForm'
-import Notification from './components/Notification'
-import Togglable from './components/Togglable'
+import { useState, useEffect, useRef } from "react"
+import Blog from "./components/Blog"
+import blogService from "./services/blogs"
+import LoginForm from "./components/LoginForm"
+import AddBlogForm from "./components/AddBlogForm"
+import Notification from "./components/Notification"
+import Togglable from "./components/Togglable"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -18,10 +18,10 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const user = localStorage.getItem('loggedInUser')
+    const user = localStorage.getItem("loggedInUser")
     setUser(JSON.parse(user))
     setNotification({
-      message: 'login successful',
+      message: "login successful",
       isError: false,
     })
     setTimeout(() => {
@@ -30,16 +30,17 @@ const App = () => {
   }, [])
 
   const handleLogout = () => {
-    localStorage.removeItem('loggedInUser')
+    localStorage.removeItem("loggedInUser")
     setNotification({
-      message: 'logout successful',
+      message: "logout successful",
       isError: false,
     })
-    setUser('')
+    setUser("")
     setTimeout(() => {
       setNotification(undefined)
     }, 5000)
   }
+  console.log("blog: ", blogs[0], "user: ", user)
 
   return (
     <div>
@@ -57,7 +58,7 @@ const App = () => {
           )}
           {user && (
             <>
-              <p style={{ display: 'inline-block' }}>
+              <p style={{ display: "inline-block" }}>
                 {user.name} is logged in
               </p>
               <button onClick={handleLogout}>logout</button>

@@ -1,4 +1,4 @@
-import React, { useState, useImperativeHandle } from 'react'
+import React, { useState, useImperativeHandle } from "react"
 
 const Togglable = (props) => {
   const [visiblility, setVisiblility] = useState(false)
@@ -13,12 +13,12 @@ const Togglable = (props) => {
 
   return (
     <div>
-      <div style={{ display: visiblility ? 'block' : 'none' }}>
+      <div style={{ display: visiblility ? "block" : "none" }}>
         {props.children}
         <button onClick={toggleVisibility}>cancel</button>
       </div>
       <button
-        style={{ display: visiblility ? 'none' : 'inline-block' }}
+        style={{ display: visiblility ? "none" : "inline-block" }}
         onClick={toggleVisibility}
       >
         create new blog

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import blogServices from '../services/blogs'
+import { useState } from "react"
+import blogServices from "../services/blogs"
 
 const Blog = ({ blog, user }) => {
   const [viewDetails, setViewDetails] = useState(false)
@@ -36,8 +36,8 @@ const Blog = ({ blog, user }) => {
     <div>
       <div className="back-border">
         {blog.title} {blog.author}
-        {''}
-        <button onClick={handleSetView}>{viewDetails ? 'hide' : 'view'}</button>
+        {""}
+        <button onClick={handleSetView}>{viewDetails ? "hide" : "view"}</button>
       </div>
       {viewDetails && (
         <div className="back-border">
