@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
 import Blog from "./Blog";
 import userEvent from "@testing-library/user-event";
+import blogServices from "../services/blogs";
 
 const user = {
   id: "68f5e60c343e48aaa40a64ed",
@@ -46,9 +47,22 @@ describe("<Blog />", () => {
     await user.click(button);
     const url = screen.queryByText(blog.url);
     const likes = screen.queryByText(/likes/i);
-    screen.debug(likes);
     expect(url).toBeInTheDocument();
     expect(likes).toBeInTheDocument();
 
+  });
+
+  test("if the like button is clicked twice", async () => {
+    vi.spyOn(blogServices, "updateLikes").mockImplementation(() => Promise.resolve());
+
+    const userSim = userEvent.setup();
+
+    await userSim.click(screen.getByText(/view/i));
+
+    const likeButton = screen.getByRole("button", { name: /like/i });
+    await userSim.click(likeButton);
+    await userSim.click(likeButton);
+
+    expect(blogServices.updateLikes).toHaveBeenCalledTimes(2);
   });
 });

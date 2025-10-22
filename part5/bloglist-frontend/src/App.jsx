@@ -40,7 +40,6 @@ const App = () => {
       setNotification(undefined);
     }, 5000);
   };
-  console.log("blog: ", blogs[0], "user: ", user);
 
   return (
     <div>
