@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, test, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import Blog from "./Blog";
 import userEvent from "@testing-library/user-event";
 import blogServices from "../services/blogs";
+import AddBlogForm from "./AddBlogForm";
 
 const user = {
   id: "68f5e60c343e48aaa40a64ed",
@@ -31,7 +32,6 @@ describe("<Blog />", () => {
   });
 
   test("<Blog /> renders the blog's title and author, but does not render its URL or number of likes by default", () => {
-
     const url = screen.queryByText(blog.url);
     const likes = screen.queryByText(/likes/i);
 
@@ -49,11 +49,12 @@ describe("<Blog />", () => {
     const likes = screen.queryByText(/likes/i);
     expect(url).toBeInTheDocument();
     expect(likes).toBeInTheDocument();
-
   });
 
   test("if the like button is clicked twice", async () => {
-    vi.spyOn(blogServices, "updateLikes").mockImplementation(() => Promise.resolve());
+    vi.spyOn(blogServices, "updateLikes").mockImplementation(() =>
+      Promise.resolve()
+    );
 
     const userSim = userEvent.setup();
 
@@ -64,5 +65,50 @@ describe("<Blog />", () => {
     await userSim.click(likeButton);
 
     expect(blogServices.updateLikes).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("<AddBlogForm />", () => {
+  test("the form calls the event handler it received as props with the right details", async () => {
+    vi.spyOn(blogServices, "addBlog").mockImplementation(() =>
+      Promise.resolve()
+    );
+
+    const mockSetNotification = vi.fn();
+    const mockToggleVisibility = vi.fn();
+    const mockRef = { current: { toggleVisibility: mockToggleVisibility } };
+
+    const token = "token-placeholder";
+
+    render(
+      <AddBlogForm
+        token={token}
+        setNotification={mockSetNotification}
+        addBlogRef={mockRef}
+      />
+    );
+
+    const userSim = userEvent.setup();
+
+    await userSim.type(screen.getByLabelText(/title/i), "Test Blog");
+    await userSim.type(screen.getByLabelText(/author/i), "Test User");
+    await userSim.type(screen.getByLabelText(/url/i), "https://test-user.com");
+
+    await userSim.click(screen.getByRole("button", { name: /submit/i }));
+
+    expect(blogServices.addBlog).toHaveBeenCalledWith(
+      {
+        title: "Test Blog",
+        author: "Test User",
+        url: "https://test-user.com",
+      },
+      token
+    );
+
+    expect(mockToggleVisibility).toHaveBeenCalled();
+    expect(mockSetNotification).toHaveBeenCalledWith({
+      message: "blog added successfully",
+      isError: false,
+    });
   });
 });
