@@ -50,5 +50,15 @@ describe('Blog app', () => {
        await expect(page.getByAltText("Create New")).not.toBeVisible()
 
     })
+
+    test("a blog can be liked", async ({ page }) => {
+        await page.getByRole("button", { name: "view" }).first().click()
+
+        const likeCount = page.getByText(/likes\s+\d+/i)
+        await expect(likeCount).toHaveText(/likes\s+0/i)
+
+        await page.getByRole("button", { name: "like" }).click()
+        await expect(likeCount).toHaveText(/likes\s+1/i)
+    })
   })
 })
