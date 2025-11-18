@@ -29,6 +29,9 @@ const App = () => {
     const content = event.target.anecdote.value
     dispatch(addAnecdote(content))
   }
+  console.log("raw unsorted ancedotes: ", anecdotes);
+  console.log("sorted :", anecdotes);
+  
   
   return (
     <div>
