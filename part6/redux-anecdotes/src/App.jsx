@@ -1,11 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { setAnecdotes } from './reducers/anecdoteReducer'
+import { initializeAnecdotes } from './reducers/anecdoteReducer'
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
 import Filter from './components/FIlter'
 import Notification from './components/Notification'
 import { useEffect } from 'react'
-import { getAll } from './services/anecdoteServices'
+
 
 const App = () => {
   const dispatch = useDispatch()
@@ -17,8 +17,8 @@ const App = () => {
   const notificationObj = useSelector(state => state.notification)
 
   useEffect(() => {
-    getAll().then(anecdotes => dispatch(setAnecdotes(anecdotes)))
-  }, [dispatch])
+    dispatch(initializeAnecdotes())
+  }, [])
   
   return (
     <div>
