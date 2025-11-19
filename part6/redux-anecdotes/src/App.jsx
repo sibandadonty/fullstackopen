@@ -9,10 +9,12 @@ const App = () => {
   const anecdotes = useSelector(({ anecdotes, filter }) => {
     return anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter))
   })
+
+  const notificationObj = useSelector(state => state.notification)
   
   return (
     <div>
-      <Notification />
+      { notificationObj.show && <Notification />}
       <h2>Anecdotes</h2>
       <Filter />
       <AnecdoteList anecdotes={anecdotes}/>
