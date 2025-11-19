@@ -26,3 +26,23 @@ export const createNew = async (data) => {
 
     return response.json()
 }
+
+export const updateVote = async (id, votes) => {
+    const updateObj = {votes: votes + 1}
+
+    const options = {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateObj)
+    }
+    
+    const response = await fetch(`${baseUrl}/${id}`, options)
+    
+    if (!response.ok) {
+        throw new Error("Failed to update votes")
+    }
+
+    return await response.json()
+}
